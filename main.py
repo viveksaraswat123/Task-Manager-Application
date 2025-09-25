@@ -73,8 +73,21 @@ def load_tasks():
 # UI Setup
 root = tk.Tk()
 root.title("📋 Advanced Task Manager")
-root.geometry("750x500")
+root.geometry("870x520")
 root.resizable(False, False)
+
+# Style Configuration for Treeview (adds row borders)
+style = ttk.Style()
+style.theme_use("default")
+style.configure("Treeview",
+                background="white",
+                foreground="black",
+                rowheight=30,
+                fieldbackground="white",
+                bordercolor="black",
+                borderwidth=1)
+style.configure("Treeview.Heading", font=('Arial', 10, 'bold'))
+style.map("Treeview", background=[("selected", "#cce5ff")])
 
 # Input Frame
 frame_top = tk.Frame(root, pady=10)
@@ -107,13 +120,17 @@ btn_search.pack(side=tk.LEFT, padx=5)
 btn_show_all = tk.Button(frame_search, text="Show All", command=load_tasks)
 btn_show_all.pack(side=tk.LEFT, padx=5)
 
+# Treeview Frame with border
+frame_table = tk.Frame(root, bd=2, relief="solid", padx=2, pady=2)
+frame_table.pack(pady=10)
+
 # Task Table
 cols = ("ID", "Title", "Priority", "Due Date", "Status", "Created At")
-tree = ttk.Treeview(root, columns=cols, show="headings", height=15)
+tree = ttk.Treeview(frame_table, columns=cols, show="headings", height=15)
 for col in cols:
     tree.heading(col, text=col)
     tree.column(col, width=120 if col != "Title" else 220)
-tree.pack(pady=10)
+tree.pack()
 
 # Action Buttons
 frame_actions = tk.Frame(root, pady=10)
